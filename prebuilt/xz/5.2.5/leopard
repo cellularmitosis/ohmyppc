@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e -x
+
+name=xz
+version=5.2.5
+osname=leopard
+
+mcpu=$( ~/install/bin/mcpu )
+if test $mcpu == "7400" ; then
+sha1=TODO
+elif test $mcpu == "970" ; then
+sha1=92f91e98b01869ed8bcceafc95d9f031fdd5e742
+else
+exit 1
+fi
+
+~/prebuilt/bin/fetch-package $name $version $osname
+~/prebuilt/bin/unpack-package $name-$version.tgz $name-$version $sha1
+~/install/$name/$version/symlink

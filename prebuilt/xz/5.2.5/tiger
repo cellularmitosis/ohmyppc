@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e -x
+
+name=xz
+version=5.2.5
+osname=tiger
+
+mcpu=$( ~/install/bin/mcpu )
+if test $mcpu == "750" ; then
+sha1=
+elif test $mcpu == "7400" ; then
+sha1=1d19f2f7637880b57597abad6ec0c1face97a456
+else
+exit 1
+fi
+
+~/prebuilt/bin/fetch-package $name $version $osname
+~/prebuilt/bin/unpack-package $name-$version.tgz $name-$version $sha1
+~/install/$name/$version/symlink
