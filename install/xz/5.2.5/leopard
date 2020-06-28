@@ -1,0 +1,51 @@
+#!/bin/bash
+
+set -e -x
+
+name=xz
+version=5.2.5
+tarball=$name-$version.tar.gz
+sha1=fa2ae4db119f639a01b02f99f1ba671ece2828eb
+
+osname=leopard
+osver=10.5
+
+# already installed?
+prefix=$HOME/opt/$name-$version
+test -e $prefix/.installed && exit 0
+
+# use a pre-built package if available
+~/prebuilt/$name/$version/$osname && exit 0
+
+# fetch source
+~/install/bin/fetch-dist $tarball
+
+# unpack
+~/install/bin/unpack-dist $tarball $name-$version $sha1
+cd ~/tmp/$name-$version
+
+# build
+cc=/usr/bin/gcc-4.2
+mcpu=$( ~/install/bin/mcpu )
+cflags="-mmacosx-version-min=$osver -mcpu=$mcpu -Os $cflags"
+./configure --prefix=$prefix CC=$cc CFLAGS="$cflags"
+nice make
+
+# test
+make check
+
+# install
+rm -rf $prefix
+mkdir -p $prefix
+make install
+touch $prefix/.installed
+env > $prefix/.env
+
+# install symlinks
+~/install/$name/$version/symlink
+
+# make a pre-built package
+~/install/bin/make-package $name $version $osname
+
+# cleanup
+rm -rf ~/tmp/$name-$version
