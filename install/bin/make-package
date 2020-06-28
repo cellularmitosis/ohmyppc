@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e -x
+
+name=$1
+version=$2
+osname=$3
+
+mcpu=$( ~/install/bin/mcpu )
+
+destdir=$HOME/tmp/packages/$name/$version/$osname/$mcpu
+mkdir -p $destdir
+cd ~/opt
+tar czf $destdir/$name-$version.tgz $name-$version

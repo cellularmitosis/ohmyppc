@@ -8,5 +8,4 @@ prefix=$HOME/opt/$name-$version
 
 # install symlinks
 mkdir -p ~/local/bin
-cd ~/local/bin
-ln -sf $prefix/bin/make .
+ln -sfv $prefix/bin/make ~/local/bin/

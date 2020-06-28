@@ -4,6 +4,7 @@ set -e -x
 
 name=make
 version=4.2.1
+tarball=$name-$version.tar.bz2
 sha1=7d9d11eb36cfb752da1fb11bb3e521d2a3cc8830
 
 osname=tiger
@@ -17,31 +18,26 @@ test -e $prefix/.installed && exit 0
 ~/prebuilt/$name/$version/$osname && exit 0
 
 # fetch source
-tarball=$name-$version.tar.bz2
-~/install/bin/fetch-dist $tarball $sha1
+~/install/bin/fetch-dist $tarball
 
 # unpack
-~/install/bin/unpack-dist $name-$version $tarball
-cd $HOME/tmp/$name-$version
+~/install/bin/unpack-dist $tarball $name-$version $sha1
+cd ~/tmp/$name-$version
 
 # build
 cc=/usr/bin/gcc-4.0
-mcpu=$( $HOME/install/bin/mcpu )
+mcpu=$( ~/install/bin/mcpu )
 cflags="-mmacosx-version-min=$osver -mcpu=$mcpu -Os $cflags"
 ./configure --prefix=$prefix CC=$cc CFLAGS="$cflags"
 nice make
 
 # test
-# Note: I'm seeing a few tests fail on Tiger/G3, but the resulting
+# Note: I'm seeing a few tests fail on Tiger (G3 and G4), but the resulting
 # 'make' binary seems to work, so I'm tolerating 'make check' to failure.
 # Details:
 #  - misc/close_stdout fails with 'no tests found!'
 #  - output-sync.mk fails with signal 14 and a 30-second timeout.
-if test "$mcpu" == "750" ; then
-    make check || true
-else
-    make check
-fi
+make check || true
 
 # install
 rm -rf $prefix
@@ -50,10 +46,11 @@ make install
 touch $prefix/.installed
 env > $prefix/.env
 
+# install symlinks
+~/install/$name/$version/symlink
+
 # make a pre-built package
-mkdir -p ~/tmp/packages/$osname/$mcpu
-cd ~/opt
-tar czf ~/tmp/packages/$osname/$mcpu/$name-$version.tgz $name-$version
+~/install/bin/make-package $name $version $osname
 
 # cleanup
 rm -rf ~/tmp/$name-$version

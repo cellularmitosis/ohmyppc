@@ -8,5 +8,4 @@ prefix=$HOME/opt/$name-$version
 
 # uninstall symlinks
 mkdir -p ~/local/bin
-cd ~/local/bin
-rm -f make
+rm -fv ~/local/bin/make

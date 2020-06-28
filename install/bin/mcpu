@@ -1,9 +1,9 @@
 #!/bin/bash
 
-set -e
+set -e -x
 
 # detect and print out an appropriate gcc -mcpu argument.
-# usage: gcc -mcpu=$(~/bin/mcpu)
+# usage: gcc -mcpu=$( ~/install/bin/mcpu )
 
 if test "$( uname )" == "Darwin" ; then
     if test "$( sysctl -n hw.cputype )" == "18" ; then  # PowerPC
