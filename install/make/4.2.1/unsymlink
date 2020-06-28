@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+name=make
+version=4.2.1
+prefix=$HOME/opt/$name-$version
+
+# uninstall symlinks
+mkdir -p ~/local/bin
+cd ~/local/bin
+rm -f make
