@@ -1,0 +1,70 @@
+#!/bin/bash
+
+set -e -x
+
+name=readline
+version=8.0
+tarball=$name-$version.tar.gz
+sha1=d58041c2143595dc001d2777ae9a200be30198b0
+
+osname=tiger
+osver=10.4
+
+# already installed?
+prefix=$HOME/opt/$name-$version
+test -e $prefix/.installed && exit 0
+
+# use a pre-built package if available
+~/prebuilt/$name/$version/$osname && exit 0
+
+# fetch source
+~/install/bin/fetch-dist $tarball
+
+# fetch patches
+~/install/bin/fetch-dist readline80-001
+~/install/bin/check-sha1 readline80-001 a229e0f7daf25dff84c3e4712adc66d5aefa84a3
+
+~/install/bin/fetch-dist readline80-002
+~/install/bin/check-sha1 readline80-002 bb6fc95071aeb7603deb3c266a1d2d4220709110
+
+~/install/bin/fetch-dist readline80-003
+~/install/bin/check-sha1 readline80-003 af2fbaad0c656abf3d92c3b8381376badcacf3f9
+
+~/install/bin/fetch-dist readline80-004
+~/install/bin/check-sha1 readline80-004 e1329bf1231948cc01da4b6bce1826c85188cb5b 
+
+# unpack
+~/install/bin/unpack-dist $tarball $name-$version $sha1
+cd ~/tmp/$name-$version
+
+# apply patches
+patch -p < ~/dist/readline80-001
+patch -p < ~/dist/readline80-002
+patch -p < ~/dist/readline80-003
+patch -p < ~/dist/readline80-004
+
+# build
+cc=/usr/bin/gcc-4.0
+mcpu=$( ~/install/bin/mcpu )
+cflags="-mmacosx-version-min=$osver -mcpu=$mcpu -Os $cflags"
+./configure --prefix=$prefix CC=$cc CFLAGS="$cflags"
+nice make
+
+# test
+make check
+
+# install
+rm -rf $prefix
+mkdir -p $prefix
+make install
+touch $prefix/.installed
+env > $prefix/.env
+
+# install symlinks
+~/install/$name/$version/symlink
+
+# make a pre-built package
+~/install/bin/make-package $name $version $osname
+
+# cleanup
+rm -rf ~/tmp/$name-$version

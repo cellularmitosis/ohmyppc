@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e
+
+distfile=$1
+sha1=$2
+
+test $sha1 == "$( openssl sha1 ~/dist/$distfile | awk '{print $NF}' )"
