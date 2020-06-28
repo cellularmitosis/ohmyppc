@@ -1,1 +1,10 @@
 #!/bin/bash
+
+set -e
+
+name=lzop
+version=1.04
+prefix=$HOME/opt/$name-$version
+
+# uninstall symlinks
+rm -fv ~/local/bin/lzop

@@ -1,1 +1,11 @@
 #!/bin/bash
+
+set -e
+
+name=lzop
+version=1.04
+prefix=$HOME/opt/$name-$version
+
+# install symlinks
+mkdir -p ~/local/bin
+ln -sfv $prefix/bin/lzop ~/local/bin/
