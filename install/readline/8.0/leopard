@@ -38,10 +38,10 @@ test -e $prefix/.installed && exit 0
 cd ~/tmp/$name-$version
 
 # apply patches
-patch -p 1 < ~/dist/readline80-001
-patch -p 1 < ~/dist/readline80-002
-patch -p 1 < ~/dist/readline80-003
-patch -p 1 < ~/dist/readline80-004
+patch -p 0 < ~/dist/readline80-001
+patch -p 0 < ~/dist/readline80-002
+patch -p 0 < ~/dist/readline80-003
+patch -p 0 < ~/dist/readline80-004
 
 # build
 cc=/usr/bin/gcc-4.2
