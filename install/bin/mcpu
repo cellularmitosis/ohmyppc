@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -e
+
+# detect and print out an appropriate gcc -mcpu argument.
+# usage: gcc -mcpu=$(~/bin/mcpu)
+
+if test "$( uname )" == "Darwin" ; then
+    if test "$( sysctl -n hw.cputype )" == "18" ; then  # PowerPC
+        if test "$( sysctl -n hw.cpusubtype )" == "9" ; then  # G3
+            echo 750
+            exit 0
+        elif test "$( sysctl -n hw.cpusubtype )" == "10" ; then  # G4
+            echo 7400
+            exit 0
+        elif test "$( sysctl -n hw.cpusubtype )" == "11" ; then  # G4e
+            # note: the G4e is actually 7450, but I've decided to settle
+            # on one common build configuration for all G4 chips.
+            echo 7400
+            exit 0
+        elif test "$( sysctl -n hw.cpusubtype )" == "100" ; then  # G5
+            echo 970
+            exit 0
+        fi
+    fi
+fi
+
+echo "Error: mcpu hasn't implemented support for this configuration yet." >&2
+exit 1
