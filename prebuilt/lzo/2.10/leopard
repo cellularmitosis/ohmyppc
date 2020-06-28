@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e -x
+
+name=lzo
+version=2.10
+osname=leopard
+
+mcpu=$( ~/install/bin/mcpu )
+if test $mcpu == "7400" ; then
+sha1=TODO
+elif test $mcpu == "970" ; then
+sha1=51648bac83706f0fe54ad7073c3336574e18f211
+else
+exit 1
+fi
+
+~/prebuilt/bin/fetch-package $name $version $osname
+~/prebuilt/bin/unpack-package $name-$version.tgz $name-$version $sha1
+~/install/$name/$version/symlink

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e -x
+
+name=lzo
+version=2.10
+osname=tiger
+
+mcpu=$( ~/install/bin/mcpu )
+if test $mcpu == "750" ; then
+sha1=ea94474e9697568cce6dd98be76928c5ba8efe63
+elif test $mcpu == "7400" ; then
+sha1=f6dd4dbba848d3d35214592d9be34867a38d27b0
+else
+exit 1
+fi
+
+~/prebuilt/bin/fetch-package $name $version $osname
+~/prebuilt/bin/unpack-package $name-$version.tgz $name-$version $sha1
+~/install/$name/$version/symlink

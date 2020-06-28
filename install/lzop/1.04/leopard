@@ -5,7 +5,7 @@ set -e -x
 name=lzop
 version=1.04
 tarball=$name-$version.tar.gz
-sha1=4924676a9bae5db58ef129dc1cebce3baa3c4b5d
+sha1=3540761ce8fc6dc42c326a9fcb1471e190a4db62
 
 osname=leopard
 osver=10.5

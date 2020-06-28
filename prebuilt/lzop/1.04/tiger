@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e -x
+
+name=lzop
+version=1.04
+osname=tiger
+
+mcpu=$( ~/install/bin/mcpu )
+if test $mcpu == "750" ; then
+sha1=580e34e77dabd10a011337219fc57286ec3dbda6
+elif test $mcpu == "7400" ; then
+sha1=ac23077ca86bb57e36331c959bbad34272e7cbab
+else
+exit 1
+fi
+
+~/prebuilt/bin/fetch-package $name $version $osname
+~/prebuilt/bin/unpack-package $name-$version.tgz $name-$version $sha1
+~/install/$name/$version/symlink
