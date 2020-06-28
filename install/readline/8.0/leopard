@@ -20,9 +20,28 @@ test -e $prefix/.installed && exit 0
 # fetch source
 ~/install/bin/fetch-dist $tarball
 
+# fetch patches
+~/install/bin/fetch-dist readline80-001
+~/install/bin/check-sha1 readline80-001 a229e0f7daf25dff84c3e4712adc66d5aefa84a3
+
+~/install/bin/fetch-dist readline80-002
+~/install/bin/check-sha1 readline80-002 bb6fc95071aeb7603deb3c266a1d2d4220709110
+
+~/install/bin/fetch-dist readline80-003
+~/install/bin/check-sha1 readline80-003 af2fbaad0c656abf3d92c3b8381376badcacf3f9
+
+~/install/bin/fetch-dist readline80-004
+~/install/bin/check-sha1 readline80-004 e1329bf1231948cc01da4b6bce1826c85188cb5b 
+
 # unpack
 ~/install/bin/unpack-dist $tarball $name-$version $sha1
 cd ~/tmp/$name-$version
+
+# apply patches
+patch -p 1 < ~/dist/readline80-001
+patch -p 1 < ~/dist/readline80-002
+patch -p 1 < ~/dist/readline80-003
+patch -p 1 < ~/dist/readline80-004
 
 # build
 cc=/usr/bin/gcc-4.2
