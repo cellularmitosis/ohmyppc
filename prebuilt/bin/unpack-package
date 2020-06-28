@@ -14,3 +14,4 @@ mkdir -p ~/opt
 cd ~/opt
 rm -rf $dirname
 tar xzf ~/tmp/$pkg
+rm -f ~/tmp/$pkg
