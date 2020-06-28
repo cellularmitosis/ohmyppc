@@ -4,7 +4,7 @@ set -e -x
 
 pkg=$1
 dirname=$2
-sha1=$2
+sha1=$3
 
 # verify the pkg
 test $sha1 == "$( openssl sha1 ~/tmp/$pkg | awk '{print $NF}' )"

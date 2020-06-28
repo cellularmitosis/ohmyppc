@@ -8,9 +8,9 @@ osname=leopard
 
 mcpu=$( ~/install/bin/mcpu )
 if test $mcpu == "7400" ; then
-sha1=FIXME
+sha1=TODO
 elif test $mcpu == "970" ; then
-sha1=2d0c0a12274474d0838d2d7f25226dab6b860d68
+sha1=2fd48e6c1c3c319c2d7bc3ed9d74eacaa27efe27
 else
 exit 1
 fi

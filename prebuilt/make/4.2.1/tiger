@@ -8,9 +8,9 @@ osname=tiger
 
 mcpu=$( ~/install/bin/mcpu )
 if test $mcpu == "750" ; then
-sha1=76bbb27e18d776899200b42c641e69bb7fd1a5c5
+sha1=17fe95abce0488abf9646192f493e0666ba3e74a
 elif test $mcpu == "7400" ; then
-sha1=6f4c362caad5debe097ad055823d3b0c72e00b6d
+sha1=3e018f489d5071a4be87fda8c1600ecafc0391cc
 else
 exit 1
 fi
