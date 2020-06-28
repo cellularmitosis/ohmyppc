@@ -2,13 +2,24 @@
 
 set -e -x
 
-name=lzo
-version=2.10
+name=lzop
+version=1.04
 tarball=$name-$version.tar.gz
 sha1=4924676a9bae5db58ef129dc1cebce3baa3c4b5d
 
 osname=leopard
 osver=10.5
+
+deps=$( cat << EOF
+lzo/2.10
+EOF
+)
+
+# install deps
+for dep in $deps
+do
+    ~/install/$dep/$osname
+done
 
 # already installed?
 prefix=$HOME/opt/$name-$version
@@ -28,12 +39,16 @@ cd ~/tmp/$name-$version
 cc=/usr/bin/gcc-4.2
 mcpu=$( ~/install/bin/mcpu )
 cflags="-mmacosx-version-min=$osver -mcpu=$mcpu -Os $cflags"
-./configure --prefix=$prefix --enable-shared CC=$cc CFLAGS="$cflags"
+./configure \
+    --prefix=$prefix \
+    CPPFLAGS=-I$HOME/opt/lzo-2.10/include \
+    LDFLAGS=-L$HOME/opt/lzo-2.10/lib \
+    CC=$cc \
+    CFLAGS="$cflags"
 nice make V=1
 
 # test
 make check
-make test
 
 # install
 rm -rf $prefix
