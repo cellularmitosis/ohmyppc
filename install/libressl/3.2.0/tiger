@@ -1,0 +1,51 @@
+#!/bin/bash
+
+set -e -x
+
+name=libressl
+version=3.2.0
+tarball=$name-$version.tar.gz
+sha1=de3c762ffaba7c60101f92d2a419e886a199de03
+
+osname=tiger
+osver=10.4
+
+# already installed?
+prefix=$HOME/opt/$name-$version
+test -e $prefix/.installed && exit 0
+
+# use a pre-built package if available
+~/prebuilt/$name/$version/$osname && exit 0
+
+# fetch source
+~/install/bin/fetch-dist $tarball
+
+# unpack
+~/install/bin/unpack-dist $tarball $name-$version $sha1
+cd ~/tmp/$name-$version
+
+# build
+cc=/usr/bin/gcc-4.0
+mcpu=$( ~/install/bin/mcpu )
+cflags="-mmacosx-version-min=$osver -mcpu=$mcpu -Os $cflags"
+./configure --prefix=$prefix CC=$cc CFLAGS="$cflags"
+nice make V=1
+
+# test
+make check
+
+# install
+rm -rf $prefix
+mkdir -p $prefix
+make install
+touch $prefix/.installed
+env > $prefix/.env
+
+# install symlinks
+~/install/$name/$version/symlink
+
+# make a pre-built package
+~/install/bin/make-package $name $version $osname
+
+# cleanup
+rm -rf ~/tmp/$name-$version

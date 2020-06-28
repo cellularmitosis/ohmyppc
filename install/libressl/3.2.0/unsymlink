@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+
+name=libressl
+version=3.2.0
+prefix=$HOME/opt/$name-$version
+
+# uninstall symlinks
+cd $prefix/bin
+for f in *
+do
+    rm -fv ~/local/bin/$f
+done
