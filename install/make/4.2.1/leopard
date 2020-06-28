@@ -32,7 +32,7 @@ cflags="-mmacosx-version-min=$osver -mcpu=$mcpu -Os $cflags"
 nice make
 
 # test
-make check || true
+make check
 
 # install
 rm -rf $prefix
@@ -41,6 +41,10 @@ make install
 touch $prefix/.installed
 env > $prefix/.env
 
+# make a pre-built package
+mkdir -p ~/tmp/packages/$osname/$mcpu
+cd ~/opt
+tar czf ~/tmp/packages/$osname/$mcpu/$name-$version.tgz $name-$version
+
 # cleanup
-cd ..
-rm -rf $name-$version
+rm -rf ~/tmp/$name-$version
