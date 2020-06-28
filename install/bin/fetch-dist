@@ -1,20 +1,18 @@
 #!/bin/bash
 
-tarball=$1
-sha1=$2
+set -e -x
 
-set -e
+tarball=$1
 
 distmirror=${distmirror:-http://distfiles.gentoo.org/distfiles}
 
 # fetch the source if needed
-mkdir -p $HOME/dist
-if test ! -e $HOME/dist/$tarball ; then
-    cd /tmp
+mkdir -p ~/dist
+if ! test -e ~/dist/$tarball ; then
+    mkdir -p ~/tmp
+    cd ~/tmp
+    rm -f $tarball
     url=$distmirror/$tarball
     curl -fkLO $url
-    mv $tarball $HOME/dist/
+    mv $tarball ~/dist/
 fi
-
-# verify the source
-test $sha1 == "$( openssl sha1 $HOME/dist/$tarball | awk '{print $NF}' )"

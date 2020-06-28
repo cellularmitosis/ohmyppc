@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e -x
+
+name=make
+version=4.2.1
+osname=tiger
+
+mcpu=$( ~/install/bin/mcpu )
+if test $mcpu == "750" ; then
+sha1=76bbb27e18d776899200b42c641e69bb7fd1a5c5
+elif test $mcpu == "7400" ; then
+sha1=6f4c362caad5debe097ad055823d3b0c72e00b6d
+else
+exit 1
+fi
+
+~/prebuilt/bin/fetch-package $name $version $osname
+~/prebuilt/bin/unpack-package $name-$version.tgz $name-$version $sha1
+~/install/$name/$version/symlink

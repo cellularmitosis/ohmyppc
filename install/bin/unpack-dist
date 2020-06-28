@@ -1,27 +1,31 @@
 #!/bin/bash
 
-dirname=$1
-tarball=$2
+set -e -x
 
-set -e
+tarball=$1
+dirname=$2
+sha1=$3
 
-mkdir -p $HOME/tmp
-cd $HOME/tmp
+# verify the source
+test $sha1 == "$( openssl sha1 ~/dist/$tarball | awk '{print $NF}' )"
+
+mkdir -p ~/tmp
+cd ~/tmp
 rm -rf $dirname
 
 if test "${tarball: -7}" == ".tar.gz" \
      -o "${tarball: -4}" == ".tgz"
 then
-    tar xzf $HOME/dist/$tarball
+    tar xzf ~/dist/$tarball
 elif test "${tarball: -8}" == ".tar.bz2" \
        -o "${tarball: -5}" == ".tbz2" \
        -o "${tarball: -4}" == ".tbz"
 then
-    tar xjf $HOME/dist/$tarball
+    tar xjf ~/dist/$tarball
 elif test "${tarball: -7}" == ".tar.xz" \
        -o "${tarball: -4}" == ".txz"
 then
-    cat $HOME/dist/$tarball | unxz | tar x
+    cat ~/dist/$tarball | unxz | tar x
 else
     echo "Error: don't know how to decompress $tarball" >&2
     exit 1

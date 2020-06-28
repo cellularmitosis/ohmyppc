@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e -x
+
+name=$1
+version=$2
+osname=$3
+
+ohmyppc_mirror=${ohmyppc_mirror:-http://pi3b-1}
+
+pkg=$name-$version.tgz
+mkdir -p ~/tmp
+cd ~/tmp
+
+# fetch the package if needed
+if ! test -e $pkg ; then
+    mcpu=$( ~/install/bin/mcpu )
+    url=$ohmyppc_mirror/ohmyppc/packages/$name/$version/$osname/$mcpu/$pkg
+    curl -fkLO $url
+fi

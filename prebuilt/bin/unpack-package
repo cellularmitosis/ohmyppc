@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -e -x
+
+pkg=$1
+dirname=$2
+sha1=$2
+
+# verify the pkg
+test $sha1 == "$( openssl sha1 ~/tmp/$pkg | awk '{print $NF}' )"
+
+# install the package
+mkdir -p ~/opt
+cd ~/opt
+rm -rf $dirname
+tar xzf ~/tmp/$pkg
