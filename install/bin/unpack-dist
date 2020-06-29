@@ -25,7 +25,7 @@ then
 elif test "${tarball: -7}" == ".tar.xz" \
        -o "${tarball: -4}" == ".txz"
 then
-    cat ~/dist/$tarball | unxz | tar x
+    cat ~/dist/$tarball | ~/opt/xz-5.2.5/bin/unxz | tar x
 else
     echo "Error: don't know how to decompress $tarball" >&2
     exit 1

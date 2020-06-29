@@ -2,7 +2,7 @@
 
 set -e -o pipefail -x
 
-source $( dirname ${BASH_SOURCE[0]} )/common
+source $( dirname $0 )/common
 
 osname=leopard
 osver=10.5
