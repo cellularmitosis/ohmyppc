@@ -1,0 +1,5 @@
+name=gcc
+version=4.7.4
+tarball=$name-$version.tar.bz2
+prefix=$HOME/opt/$name-$version
+sha1=fa2ae4db119f639a01b02f99f1ba671ece2828eb

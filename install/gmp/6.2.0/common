@@ -1,0 +1,5 @@
+name=gmp
+version=6.2.0
+tarball=$name-$version.tar.xz
+prefix=$HOME/opt/$name-$version
+sha1=052a5411dc74054240eec58132d2cf41211d0ff6

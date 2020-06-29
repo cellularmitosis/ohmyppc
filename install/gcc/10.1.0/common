@@ -1,0 +1,5 @@
+name=gcc
+version=10.1.0
+tarball=$name-$version.tar.xz
+prefix=$HOME/opt/$name-$version
+sha1=fa2ae4db119f639a01b02f99f1ba671ece2828eb

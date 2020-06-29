@@ -1,0 +1,69 @@
+#!/bin/bash
+
+set -e -x
+
+source $( dirname ${BASH_SOURCE[0]} )/common
+
+osname=tiger
+osver=10.4
+
+# gcc 10.1.0 requires:
+# gmp 4.3.2 or later
+# mpfr 3.1.0 or later
+# mpc 1.1.0 or later
+# isl 0.15 or later
+
+deps=$( cat << EOF
+xz/5.2.5
+gcc/4.7.4
+gmp/6.2.0
+mpfr/4.0.2
+mpc/1.1.0
+isl/0.22.1
+EOF
+)
+
+# install deps
+for dep in $deps
+do
+    ~/install/$dep/$osname
+done
+
+# already installed?
+test -e $prefix/.installed && exit 0
+
+# use a pre-built package if available
+~/prebuilt/$name/$version/$osname && exit 0
+
+# fetch source
+~/install/bin/fetch-dist $tarball
+
+# unpack
+~/install/bin/unpack-dist $tarball $name-$version $sha1
+cd ~/tmp/$name-$version
+
+# build
+cc=$HOME/opt/gcc-4.7.4/bin/gcc
+mcpu=$( ~/install/bin/mcpu )
+cflags="-mmacosx-version-min=$osver -mcpu=$mcpu -Os $cflags"
+./configure --prefix=$prefix CC=$cc CFLAGS="$cflags"
+nice make
+
+# test
+make check
+
+# install
+rm -rf $prefix
+mkdir -p $prefix
+make install
+touch $prefix/.installed
+env > $prefix/.env
+
+# install symlinks
+~/install/$name/$version/symlink
+
+# make a pre-built package
+~/install/bin/make-package $name $version $osname
+
+# cleanup
+rm -rf ~/tmp/$name-$version
