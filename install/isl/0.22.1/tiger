@@ -9,6 +9,7 @@ osver=10.4
 
 deps=$( cat << EOF
 xz/5.2.5
+gmp/6.2.0
 EOF
 )
 
@@ -34,10 +35,12 @@ cd ~/tmp/$name-$version
 # build
 cc=/usr/bin/gcc-4.0
 mcpu=$( ~/install/bin/mcpu )
-# Tiger/G4 fails without -force_cpusubtype_ALL:
-# tmp-mod_34lsub1.s:368:stvx vector instruction is optional for the PowerPC (not allowed without -force_cpusubtype_ALL option)
-cflags="-mmacosx-version-min=$osver -mcpu=$mcpu -Os -force_cpusubtype_ALL $cflags"
-./configure --prefix=$prefix CC=$cc CFLAGS="$cflags"
+cflags="-mmacosx-version-min=$osver -mcpu=$mcpu -Os $cflags"
+./configure \
+    --prefix=$prefix \
+    --with-gmp=$HOME/opt/gmp-6.2.0 \
+    CC=$cc \
+    CFLAGS="$cflags"
 nice make
 
 # test

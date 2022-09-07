@@ -34,6 +34,7 @@ cd ~/tmp/$name-$version
 # build
 cc=/usr/bin/gcc-4.2
 mcpu=$( ~/install/bin/mcpu )
+# FIXME is force_cpusubtype_ALL only required for G5?
 cflags="-mmacosx-version-min=$osver -mcpu=$mcpu -Os -force_cpusubtype_ALL $cflags"
 ./configure --prefix=$prefix CC=$cc CFLAGS="$cflags"
 nice make

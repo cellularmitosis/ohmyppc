@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -e
+
+source $( dirname $0 )/common
+
+# install symlinks
+mkdir -p ~/local/bin
+cd $prefix/bin
+for f in *
+do
+    ln -sfv $prefix/bin/$f ~/local/bin/
+done

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+source $( dirname $0 )/common
+
+# uninstall symlinks
+cd $prefix/bin
+for f in *
+do
+    rm -fv ~/local/bin/$f
+done

@@ -1,0 +1,5 @@
+name=mpfr
+version=4.0.2
+tarball=$name-$version.tar.xz
+prefix=$HOME/opt/$name-$version
+sha1=52c1f2a4c9a202f46cf3275a8d46b562aa584208
